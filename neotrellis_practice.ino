@@ -15,9 +15,9 @@ Adafruit_NeoTrellis trellis;
 #define MODE LATCHING //all Trellis buttons in latching mode
 #define NUMTRELLIS 1
 #define numKeys (NUMTRELLIS * 16)
-#define SS_PIN 9
-#define RST_PIN 8
-#define PASSWORD "2002"
+#define SS_PIN 10
+#define RST_PIN 9
+#define PASSWORD "sandie77"
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
 //define a callback for key presses
@@ -174,6 +174,11 @@ void loop() {
       x = 17;
     }
 
+    if (x == 3) {                       //rainbow
+      m = 2;
+      x = 17;
+    }
+
     if (x == 12) {
       Serial.println("led toggle");
       if (pixelState == true) {
@@ -193,7 +198,6 @@ void loop() {
       trellis.pixels.setPixelColor(15, 255, 255, 255);
       trellis.pixels.setPixelColor(11, 0, 0, 0);
       trellis.pixels.setPixelColor(7, 0, 0, 0);
-      trellis.pixels.setPixelColor(3, 0, 0, 0);
       trellis.pixels.show();
       x = 17;
     }
@@ -203,7 +207,6 @@ void loop() {
       trellis.pixels.setPixelColor(15, 0, 0, 0);
       trellis.pixels.setPixelColor(11, 255, 255, 255);
       trellis.pixels.setPixelColor(7, 0, 0, 0);
-      trellis.pixels.setPixelColor(3, 0, 0, 0);
       trellis.pixels.show();
       x = 17;
     }
@@ -213,17 +216,6 @@ void loop() {
       trellis.pixels.setPixelColor(15, 0, 0, 0);
       trellis.pixels.setPixelColor(11, 0, 0, 0);
       trellis.pixels.setPixelColor(7, 255, 255, 255);
-      trellis.pixels.setPixelColor(3, 0, 0, 0);
-      trellis.pixels.show();
-      x = 17;
-    }
-
-    if (x == 3) {
-      selector = 3;
-      trellis.pixels.setPixelColor(15, 0, 0, 0);
-      trellis.pixels.setPixelColor(11, 0, 0, 0);
-      trellis.pixels.setPixelColor(7, 0, 0, 0);
-      trellis.pixels.setPixelColor(3, 255, 255, 255);
       trellis.pixels.show();
       x = 17;
     }
@@ -255,6 +247,17 @@ void loop() {
       }
     }
   }
+
+  if (m == 2) {
+    rainbowScroll();
+    if (x < 17) {
+      m = 0;
+      x = 17;
+      clearPixels();
+      lightPixels();
+    }
+  }
+
   trellis.read();
 
   // Look for new cards
@@ -281,7 +284,7 @@ void loop() {
   Serial.println();
   Serial.print("Message : ");
   content.toUpperCase();
-  if (content.substring(1) == "C0 E0 59 31")
+  if (content.substring(1) == "63 E6 74 03")
   {
     Serial.println("Authorized access");
     Serial.println();
@@ -324,6 +327,7 @@ int lightPixels() {
   trellis.pixels.setPixelColor(13, 255, 50, 40); //firefox
   trellis.pixels.setPixelColor(9, 130, 148, 209); //discord
   trellis.pixels.setPixelColor(5, 30, 215, 96); //steam
+  trellis.pixels.setPixelColor(3, 0, 242, 255); //rainbow
   if (selector == 0) {
     trellis.pixels.setPixelColor(15, 255, 255, 255);
   }
@@ -332,9 +336,6 @@ int lightPixels() {
   }
   if (selector == 2) {
     trellis.pixels.setPixelColor(7, 255, 255, 255);
-  }
-  if (selector == 3) {
-    trellis.pixels.setPixelColor(3, 255, 255, 255);
   }
   trellis.pixels.show();
   pixelState = true;
@@ -375,6 +376,7 @@ int typePassword() {
     Keyboard.release(KEY_UP_ARROW);
     delay(100);
     Keyboard.println(PASSWORD);
+    Keyboard.press(KEY_RETURN);
     Keyboard.releaseAll();
     rainbowScroll();
     lightPixels();
