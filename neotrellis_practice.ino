@@ -377,6 +377,7 @@ int typePassword() {
     delay(100);
     Keyboard.println(PASSWORD);
     Keyboard.press(KEY_RETURN);
+    delay(50);
     Keyboard.releaseAll();
     rainbowScroll();
     lightPixels();
