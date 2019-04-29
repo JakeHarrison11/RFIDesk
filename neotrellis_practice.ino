@@ -249,13 +249,30 @@ void loop() {
   }
 
   if (m == 2) {
-    rainbowScroll();
+  for (uint16_t i = 0; i < trellis.pixels.numPixels(); i++) {
+    trellis.pixels.setPixelColor(i, Wheel(map(i, 0, trellis.pixels.numPixels(), 0, 255)));
+    trellis.pixels.show();
     if (x < 17) {
       m = 0;
       x = 17;
       clearPixels();
       lightPixels();
+      return 0;
     }
+    delay(50);
+  }
+  for (uint16_t i = 0; i < trellis.pixels.numPixels(); i++) {
+    trellis.pixels.setPixelColor(i, 0x000000);
+    trellis.pixels.show();
+    if (x < 17) {
+      m = 0;
+      x = 17;
+      clearPixels();
+      lightPixels();
+      return 0;
+    }
+    delay(50);
+  }
   }
 
   trellis.read();
