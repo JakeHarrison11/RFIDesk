@@ -1,5 +1,0 @@
-{
-    "board": "arduino:avr:micro",
-    "port": "COM6",
-    "sketch": "neotrellis_practice.ino"
-}
